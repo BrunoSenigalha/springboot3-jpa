@@ -20,6 +20,9 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        if (obj.isPresent()) {
+            return obj.get();
+        }
+        throw new IllegalArgumentException("User invalid id");
     }
 }
