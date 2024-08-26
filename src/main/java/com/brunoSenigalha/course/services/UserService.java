@@ -25,4 +25,8 @@ public class UserService {
         }
         throw new IllegalArgumentException("User invalid id");
     }
+
+    public User insert(User obj){
+        return repository.save(obj);
+    }
 }
