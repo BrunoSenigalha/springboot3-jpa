@@ -6,9 +6,7 @@ import com.brunoSenigalha.course.services.exceptions.DatabaseException;
 import com.brunoSenigalha.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,21 +30,24 @@ public class UserService {
         return repository.save(obj);
     }
 
+    public User update(Long id, User obj) {
+        return repository.findById(id)
+                .map(entity -> {
+                    updateData(entity, obj);
+                    return repository.save(entity);
+                })
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
     public void delete(Long id) {
         User entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id));
-        try{
+        try {
             repository.delete(entity);
 
-        }catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }
-    }
-
-    public User update(Long id, User obj) {
-        User entity = repository.getReferenceById(id);
-        updateData(entity, obj);
-        return repository.save(entity);
     }
 
     private void updateData(User entity, User obj) {
