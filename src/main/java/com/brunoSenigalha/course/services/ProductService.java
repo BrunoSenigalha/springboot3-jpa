@@ -20,9 +20,6 @@ public class ProductService {
 
     public Product findById(Long id) {
         Optional<Product> obj = repository.findById(id);
-        if (obj.isPresent()) {
-            return obj.get();
-        }
-        throw new IllegalArgumentException("Invalid product id");
+        return obj.get();
     }
 }

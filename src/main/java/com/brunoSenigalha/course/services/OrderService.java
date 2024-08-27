@@ -21,10 +21,6 @@ public class OrderService {
 
     public Order findById(Long id) {
         Optional<Order> obj = repository.findById(id);
-        if (obj.isPresent()) {
-            return obj.get();
-        }
-        throw new IllegalArgumentException("Order invalid id");
-
+        return obj.get();
     }
 }

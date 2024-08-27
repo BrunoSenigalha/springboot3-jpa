@@ -2,6 +2,7 @@ package com.brunoSenigalha.course.services;
 
 import com.brunoSenigalha.course.entities.User;
 import com.brunoSenigalha.course.repositories.UserRepository;
+import com.brunoSenigalha.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        if (obj.isPresent()) {
-            return obj.get();
-        }
-        throw new IllegalArgumentException("User invalid id");
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User obj) {
@@ -34,7 +32,7 @@ public class UserService {
         repository.deleteById(id);
     }
 
-    public User update(Long id, User obj){
+    public User update(Long id, User obj) {
         User entity = repository.getReferenceById(id);
         updateData(entity, obj);
         return repository.save(entity);

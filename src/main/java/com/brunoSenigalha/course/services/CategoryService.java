@@ -20,9 +20,6 @@ public class CategoryService {
 
     public Category findById(Long id) {
         Optional<Category> obj = repository.findById(id);
-        if (obj.isPresent()) {
-            return obj.get();
-        }
-        throw new IllegalArgumentException("Category invalid id");
+        return obj.get();
     }
 }
